@@ -30,23 +30,26 @@
     boardBackgroundColor: 0xC5C5C5,
 
     // Text content
-    titleText: '4 IMAGES 1 MOT',
-    btnText: 'Jouer',
+    titleText: 'Level ',
 }
 // Variables
 var alphabets = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
 'M', 'N', 'O', 'P', 'Q', 'R',  'S', 'T', 'U', 'V', 'W', 'X',
 'Y', 'Z' ];
-var words = ["APPLE","POMME","JOE","MOPE","SLOPER"];
+alphabets = alphabets.slice(0,6)
+// var words = ["JOE","MOPE","SLOPER","JESSY"];
+var words = ["JOE"];
 var selectedWord = Math.floor(Math.random() * words.length);
 var guess;
 var guesses = [];
-var categories;
+var level = 1;
+var nextGame = false;
 /**
  * Class scene in game mode
  */
 var cadres;
 var answerSlots;
+var titleMenu;
 var lettersImages;
 
 export default class GameScene extends Phaser.Scene {
@@ -56,6 +59,7 @@ export default class GameScene extends Phaser.Scene {
     constructor() {
         super('GameScene');
     }
+
 
     /**
      * Init the scene with data sent from another scene
@@ -76,6 +80,10 @@ export default class GameScene extends Phaser.Scene {
             frameWidth: 400,
             frameHeight: 400
         });
+        this.load.spritesheet('Cadre2','assets/Cadre.png',{
+            frameWidth: 400,
+            frameHeight: 400
+        })
         this.load.image('A','assets/lettres_images/A.png');
         this.load.image('B','assets/lettres_images/B.png');
         this.load.image('C','assets/lettres_images/C.png');
@@ -117,63 +125,102 @@ export default class GameScene extends Phaser.Scene {
         cadres.create(700,450,'Cadre').setScale(.65);
         cadres.create(1150,150,'Cadre').setScale(.65);
         cadres.create(1150,450,'Cadre').setScale(.65);
-
+        titleMenu = this.add.text(null, null, gameOptions.titleText + level, {
+            fontFamily: gameOptions.textFontFamily,
+            fontStyle: gameOptions.textFontStyle,
+            fontSize: gameOptions.titleFontSize,
+            fill: gameOptions.titleColor,
+        })
+        // Answer Slots
         answerSlots = this.physics.add.staticGroup();
         var y = 650;
         var z = 650
         words.forEach((x)=>{
             if(x == words[selectedWord]){
                 for (var i = 0; i < x.length; i++){
-                    var sprite = answerSlots.create(y,z,'Cadre').setScale(.2);
-                    for (var e = 0; e < guesses.length; e++){
-                        if(x[i] !== guesses[e]){
-                            sprite = answerSlots.create(y,z,'Cadre').setScale(.2);
-                        }
-                        else{
-                            sprite.setTexture(x[i]).setScale(.5);
-
-                        }
-                    }
-
+                    var sprite = answerSlots.create(y,z,'Cadre').setScale(.2).setInteractive({dropZone: true});
+                    // this.input.setDropZone(sprite);
                     sprite.smoothed = false;
                     y = y  + 100;
                 }
             }
-        })
+        });
+        //#region
+        this.input.dragDistanceThreshold = 16;
+            this.input.on('drag',(pointer,gameObject, dragX, dragY)=>{
+                // console.log()
+
+                gameObject.x = dragX;
+                gameObject.y = dragY;
+
+            });
+        this.input.on('dragstart', function (pointer, gameObject) {
+
+            this.children.bringToTop(gameObject);
+
+        }, this);
+
+
+        this.input.on('drop', function (pointer, gameObject, dropZone) {
+
+            gameObject.x = dropZone.x;
+            gameObject.y = dropZone.y;
+            // gameObject.setScale(0.2);
+
+            gameObject.input.enabled = false;
 
 
 
-        lettersImages = this.physics.add.staticGroup();
+        });
+        self = this
+        this.input.on('dragend', function (pointer, gameObject, dropped) {
+
+            if (!dropped)
+            {
+                gameObject.x = gameObject.input.dragStartX;
+                gameObject.y = gameObject.input.dragStartY;
+            }
+            else{
+
+                guesses.push(gameObject.texture.key);
+
+            }
+            if(words[selectedWord].length == guesses.length)
+            {
+                var guess = guesses.join('');
+                console.log(guess);
+                if(words[selectedWord] == guess){
+                    guess = null
+                    self.updateLevel();
+                }
+                else{
+                    console.log("Fail");
+                    // self.updateLevel();
+
+                    // this.create();
+                }
+            }
+
+
+        });
+    //#endregion
+
+        self = this
         var y = 350;
         var x = 750;
         var delay = 2000;
+        var test = words[selectedWord].split('');
+        console.log("Outside of alphabets",guesses)
+        alphabets = self.shuffle(alphabets.concat(test));
+        // console.log(alphabets)
         alphabets.forEach((a)=>{
             if (y > 1550){
                 y = 350;
                 x = 850;
             }
-            var sprite = lettersImages.create(y,x,a).setScale(.5).setInteractive();
-            // sprite.smoothed = false;
-            console.log(words[selectedWord])
-            sprite.on('pointerdown',(pointer)=>{
-                console.log(a)
-                if(words[selectedWord].indexOf(a) > -1){
-                    sprite.setTexture('Incorrect');
-                    guesses.push(a)
-                    this.create();
-                    console.log(guesses)
-                    this.time.addEvent({
-                        delay: delay,
-                        callback: () => {
-                            sprite.visible = false;
-                        }
-                    })
-                }
-                else{
-                    sprite.setTexture('Correct');
-                }
 
-            });
+            var sprite = this.add.image(y,x,a).setScale(.5).setInteractive();
+            this.input.setDraggable(sprite);
             y = y + 100;
         });
     }
@@ -182,6 +229,7 @@ export default class GameScene extends Phaser.Scene {
      * Update the scene frame by frame
      */
     update() {
+
         // TODO update loop cycle
     }
     /**
@@ -191,5 +239,33 @@ export default class GameScene extends Phaser.Scene {
     gameOver() {
         // Go to end scene
         this.scene.start('EndScene');
+    }
+    updateLevel() {
+        guesses = [];
+        console.log(selectedWord)
+        alphabets = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+'M', 'N', 'O', 'P', 'Q', 'R',  'S', 'T', 'U', 'V', 'W', 'X',
+'Y', 'Z' ];
+        console.log(alphabets,guesses);
+        level++
+        // this.create();
+        titleMenu.setText(gameOptions.titleText + level);
+
+    }
+
+    shuffle(array) {
+        // Shuffle Array
+        let currentIndex = array.length,  randomIndex;
+
+        while (currentIndex != 0) {
+
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex--;
+
+          [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
     }
 }
