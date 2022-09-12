@@ -40,9 +40,10 @@ var selectedWord = "MANGER";
 var solved = selectedWord.split('');
 var guess;
 var guesses = [];
-var level = 2;
+var level;
 var cadres;
 var answerSlots;
+var preload = true;
 var titleMenu;
 
 /**
@@ -59,9 +60,9 @@ export default class Scene2 extends Phaser.Scene {
     /**
      * Init the scene with data sent from another scene
      */
-    init() {
-        // TODO get data from last scene
-    }
+    // TODO get data from last scene
+    init(data) { this.data = data}
+
 
     /**
      * Load the game assets.
@@ -92,32 +93,9 @@ export default class Scene2 extends Phaser.Scene {
             frameHeight: 400
         })
         // TODO MM: Try for loop to init images
-        this.load.image('A','assets/lettres_images/A.png');
-        this.load.image('B','assets/lettres_images/B.png');
-        this.load.image('C','assets/lettres_images/C.png');
-        this.load.image('D','assets/lettres_images/D.png');
-        this.load.image('E','assets/lettres_images/E.png');
-        this.load.image('F','assets/lettres_images/F.png');
-        this.load.image('G','assets/lettres_images/G.png');
-        this.load.image('H','assets/lettres_images/H.png');
-        this.load.image('I','assets/lettres_images/I.png');
-        this.load.image('J','assets/lettres_images/J.png');
-        this.load.image('K','assets/lettres_images/K.png');
-        this.load.image('L','assets/lettres_images/L.png');
-        this.load.image('M','assets/lettres_images/M.png');
-        this.load.image('N','assets/lettres_images/N.png');
-        this.load.image('O','assets/lettres_images/O.png');
-        this.load.image('P','assets/lettres_images/P.png');
-        this.load.image('Q','assets/lettres_images/Q.png');
-        this.load.image('R','assets/lettres_images/R.png');
-        this.load.image('S','assets/lettres_images/S.png');
-        this.load.image('T','assets/lettres_images/T.png');
-        this.load.image('U','assets/lettres_images/U.png');
-        this.load.image('V','assets/lettres_images/V.png');
-        this.load.image('W','assets/lettres_images/W.png');
-        this.load.image('X','assets/lettres_images/X.png');
-        this.load.image('Y','assets/lettres_images/Y.png');
-        this.load.image('Z','assets/lettres_images/Z.png');
+        alphabets.forEach((x)=>{
+            this.load.image(x,`assets/lettres_images/${x}.png`);
+        });
         // @WIP MM
         // this.load.image('Correct','assets/correct.png');
         // this.load.image('Incorrect','assets/incorrect.png');
@@ -138,7 +116,7 @@ export default class Scene2 extends Phaser.Scene {
         cadres.create(1150,450,'Eating4').setScale(.65);
 
         // Level title
-        titleMenu = this.add.text(null, null, gameOptions.titleText + level, {
+        titleMenu = this.add.text(null, null, gameOptions.titleText + this.data.level, {
             fontFamily: gameOptions.textFontFamily,
             fontStyle: gameOptions.textFontStyle,
             fontSize: gameOptions.titleFontSize,
@@ -213,8 +191,9 @@ export default class Scene2 extends Phaser.Scene {
                     guesses.splice(guesses.indexOf(gameObject.name),1);
                     gameObject.x = gameObject.input.dragStartX;
                     gameObject.y = gameObject.input.dragStartY;
-                    gameObject.input.enabled = true;
-                    console.log(gameObject.name)
+                    preload = false;
+                    self.create();
+                    console.log(alphabets);
                 }
             }
 
@@ -226,13 +205,20 @@ export default class Scene2 extends Phaser.Scene {
         var y = 450;
         var x = 750;
 
-        // Shuffles the alphabets + adding solved to the alphabets
-        alphabets = self.shuffle(alphabets);
-        // TODO MM: GameOption
-        alphabets = alphabets.slice(0,10)
-        alphabets = self.shuffle(alphabets.concat(solved));
+        if(preload){
+            // Shuffles the alphabets + adding solved to the alphabets
+            alphabets = self.shuffle(alphabets);
+            // TODO MM: GameOption
+            if(solved.length >= 6){
+                alphabets = alphabets.slice(0,10)
+            }
+            else {
+                alphabets = alphabets.slice(0,6)
+            }
+            alphabets = self.shuffle(alphabets.concat(solved));
 
-        // Places the buttons on the bottom of the screen
+            // Places the buttons on the bottom of the screen
+        }
         alphabets.forEach((a)=>{
             if (y > 1250){
                 y = 450;
@@ -242,7 +228,6 @@ export default class Scene2 extends Phaser.Scene {
             var sprite = this.add.image(y,x,a).setScale(.5).setInteractive().setName(a);
             this.input.setDraggable(sprite);
             y = y + 100;
-            console.log(y)
         });
     }
 
@@ -257,20 +242,19 @@ export default class Scene2 extends Phaser.Scene {
      * Manage game over context
      */
     nextGame() {
-        this.scene.start('Scene2');
+        level = this.data.level;
+        level++
+        this.scene.start('Scene3',{
+            level: level
+        });
     }
 
     /**
      *
      */
-    updateLevel() {
+     updateLevel() {
         guesses = [];
         // TODO MM: Use an unique global variable
-        alphabets = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
-'M', 'N', 'O', 'P', 'Q', 'R',  'S', 'T', 'U', 'V', 'W', 'X',
-'Y', 'Z' ];
-        console.log(alphabets,guesses);
-        level++
         titleMenu.setText(gameOptions.titleText + level);
     }
 
