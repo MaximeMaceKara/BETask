@@ -45,6 +45,7 @@ export default class StartScene extends Phaser.Scene {
     constructor() {
         super('StartScene');
     }
+
     preload() {
         this.load.svg('btnClassic', 'assets/btnClassic.svg');
         this.load.svg('btnClassicHover', 'assets/btnClassicHover.svg');
@@ -56,13 +57,15 @@ export default class StartScene extends Phaser.Scene {
      * Create and init game assets
      */
     create() {
+        // Init board
         this.add.graphics()
             .fillGradientStyle(gameOptions.bgColor1, gameOptions.bgColor2, gameOptions.bgColor3, gameOptions.bgColor4, gameOptions.bgColor5)
-            .fillRect(0, 0, this.game.config.width, this.game.config.height)
+            .fillRect(0, 0, this.game.config.width, this.game.config.height);
+
+        // Init sound
         this.startSound = this.sound.add('start');
         this.startSound.play();
 
-        //  Sound Delays
         this.time.addEvent({
             delay: 90000,
             callback: () => {
@@ -73,7 +76,7 @@ export default class StartScene extends Phaser.Scene {
             loop: true
         })
 
-         // Init border menu
+        // Init border menu
         this.add.image(this.game.config.width / 2, this.game.config.height / 2, 'board')
         .setScale(gameOptions.boardScale);
 
@@ -98,8 +101,9 @@ export default class StartScene extends Phaser.Scene {
             .on('pointerout', () => {
                 btn.clearTint()
                 fourimg1mot.clearTint()
-            })
+            }).on('pointerdown', () => this.goToGameScene())
 
+        // Init title
         let fourimg1mot = this.add.text(null, null, gameOptions.btnText)
             .setPadding(10)
             .setStyle({
@@ -111,12 +115,10 @@ export default class StartScene extends Phaser.Scene {
         fourimg1mot.x = this.game.config.width / 2 - fourimg1mot.width / 2;
         fourimg1mot.y = this.game.config.height * 0.40 - fourimg1mot.height / 2;
 
+        // WIP MM: New integration game mode
         // Manage mode choice
         //btn.on('pointerdown', () => this.goToGameScene('playerVsComputer'));
         //btn2.on('pointerdown', () => this.goToGameScene('computerVsPlayer'));
-        btn.on('pointerdown', () => this.goToGameScene() );
-
-      // TODO Init assets
     }
 
     /**

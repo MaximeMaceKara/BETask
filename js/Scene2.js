@@ -36,11 +36,11 @@
 var alphabets = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
 'M', 'N', 'O', 'P', 'Q', 'R',  'S', 'T', 'U', 'V', 'W', 'X',
 'Y', 'Z' ];
-var selectedWord = "COURIR";
+var selectedWord = "MANGER";
 var solved = selectedWord.split('');
 var guess;
 var guesses = [];
-var level = 1;
+var level = 2;
 var cadres;
 var answerSlots;
 var titleMenu;
@@ -48,12 +48,12 @@ var titleMenu;
 /**
  * Class scene in game mode
  */
-export default class GameScene extends Phaser.Scene {
+export default class Scene2 extends Phaser.Scene {
     /**
      * Constructor
      */
     constructor() {
-        super('GameScene');
+        super('Scene2');
     }
 
     /**
@@ -75,19 +75,19 @@ export default class GameScene extends Phaser.Scene {
             frameWidth: 400,
             frameHeight: 400
         });
-        this.load.spritesheet('Courir-1','assets/Level_Images/Level_1/courir-1.jpg',{
+        this.load.spritesheet('Eating1','assets/Level_Images/Level_2/eating1.jpg',{
             frameWidth: 400,
             frameHeight: 400
         })
-        this.load.spritesheet('Courir-2','assets/Level_Images/Level_1/courir-2.jpg',{
+        this.load.spritesheet('Eating2','assets/Level_Images/Level_2/eating2.jpg',{
             frameWidth: 400,
             frameHeight: 400
         })
-        this.load.spritesheet('Courir-3','assets/Level_Images/Level_1/courir-3.jpg',{
+        this.load.spritesheet('Eating3','assets/Level_Images/Level_2/eating3.jpg',{
             frameWidth: 400,
             frameHeight: 400
         })
-        this.load.spritesheet('Courir-4','assets/Level_Images/Level_1/courir-4.jpg',{
+        this.load.spritesheet('Eating4','assets/Level_Images/Level_2/eating4.jpg',{
             frameWidth: 400,
             frameHeight: 400
         })
@@ -132,10 +132,10 @@ export default class GameScene extends Phaser.Scene {
         // TODO MM: .65 needs to be a gameOptions
         // 4 Images ( no images yet )
         cadres = this.physics.add.staticGroup();
-        cadres.create(700,150,'Courir-1').setScale(.65);
-        cadres.create(700,450,'Courir-2').setScale(.65);
-        cadres.create(1150,150,'Courir-3').setScale(.65);
-        cadres.create(1150,450,'Courir-4').setScale(.65);
+        cadres.create(700,150,'Eating1').setScale(.65);
+        cadres.create(700,450,'Eating2').setScale(.65);
+        cadres.create(1150,150,'Eating3').setScale(.65);
+        cadres.create(1150,450,'Eating4').setScale(.65);
 
         // Level title
         titleMenu = this.add.text(null, null, gameOptions.titleText + level, {
@@ -242,6 +242,7 @@ export default class GameScene extends Phaser.Scene {
             var sprite = this.add.image(y,x,a).setScale(.5).setInteractive().setName(a);
             this.input.setDraggable(sprite);
             y = y + 100;
+            console.log(y)
         });
     }
 

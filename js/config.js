@@ -1,6 +1,8 @@
 import EndScene from './EndScene.js';
 import GameScene from './GameScene.js';
+import Scene2 from './Scene2.js';
 import StartScene from './StartScene.js';
+
 /**
  * Configuration of the game
  */
@@ -20,7 +22,7 @@ const configurations = {
             debut: true,
         },
     },
-    scene: [GameScene,StartScene, EndScene],
+    scene: [GameScene,Scene2,StartScene, EndScene],
 };
 
 /**
