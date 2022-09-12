@@ -1,15 +1,15 @@
-# Model Phaser 3
+# 4 Images 1 Word
 
 # 📄 Description
 
-Phaser 3 games starter model
+It's a game based on 4 Images 1 Word in Phaser 3
 
 > *Phaser is a JS framework dedicated to creating web games.*
 
 
 ## ℹ️ Overview
 
-- Use this template proposal to start a phaser 3 project.
+- The current version of the application only contains the architecture on which the tools will be added progressively. There are 2 branches, master & develop.
 
 
 ## 🚀 Usage instructions

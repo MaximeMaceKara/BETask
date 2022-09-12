@@ -31,12 +31,20 @@
 
     // Text content
     titleText: 'Level ',
+
+
+    // Image Size
+    imageSize: 0.65,
+
+   // answerSlots 
+    answerSlotsSizeX:650,
+    answerSlotsSizeY:650
 }
 
 var alphabets = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
 'M', 'N', 'O', 'P', 'Q', 'R',  'S', 'T', 'U', 'V', 'W', 'X',
 'Y', 'Z' ];
-var selectedWord = "NAGER";
+var selectedWord = "SATELLITE";
 var solved = selectedWord.split('');
 var guess;
 var guesses = [];
@@ -76,19 +84,19 @@ export default class Scene3 extends Phaser.Scene {
             frameWidth: 400,
             frameHeight: 400
         });
-        this.load.spritesheet('Eating1','assets/Level_Images/Level_2/eating1.jpg',{
+        this.load.spritesheet('Satellite1','assets/Level_Images/Level_3/satellite-1.jpg',{
             frameWidth: 400,
             frameHeight: 400
         })
-        this.load.spritesheet('Eating2','assets/Level_Images/Level_2/eating2.jpg',{
+        this.load.spritesheet('Satellite2','assets/Level_Images/Level_3/satellite-2.jpg',{
             frameWidth: 400,
             frameHeight: 400
         })
-        this.load.spritesheet('Eating3','assets/Level_Images/Level_2/eating3.jpg',{
+        this.load.spritesheet('Satellite3','assets/Level_Images/Level_3/satellite-3.jpg',{
             frameWidth: 400,
             frameHeight: 400
         })
-        this.load.spritesheet('Eating4','assets/Level_Images/Level_2/eating4.jpg',{
+        this.load.spritesheet('Satellite4','assets/Level_Images/Level_3/satellite-4.jpg',{
             frameWidth: 400,
             frameHeight: 400
         })
@@ -110,10 +118,10 @@ export default class Scene3 extends Phaser.Scene {
         // TODO MM: .65 needs to be a gameOptions
         // 4 Images ( no images yet )
         cadres = this.physics.add.staticGroup();
-        cadres.create(700,150,'Eating1').setScale(.65);
-        cadres.create(700,450,'Eating2').setScale(.65);
-        cadres.create(1150,150,'Eating3').setScale(.65);
-        cadres.create(1150,450,'Eating4').setScale(.65);
+        cadres.create(700,150,'Satellite1').setScale(gameOptions.imageSize);
+        cadres.create(700,450,'Satellite2').setScale(gameOptions.imageSize);
+        cadres.create(1150,150,'Satellite3').setScale(gameOptions.imageSize);
+        cadres.create(1150,450,'Satellite4').setScale(gameOptions.imageSize);
 
         // Level title
         titleMenu = this.add.text(null, null, gameOptions.titleText + this.data.level, {
@@ -127,15 +135,14 @@ export default class Scene3 extends Phaser.Scene {
         answerSlots = this.physics.add.staticGroup();
 
         // TODO MM: Add in gameOptions
-        var y = 650;
-        var z = 650;
+
 
         solved.forEach((x,index)=>{
             // Set name of image to Index of solved array
-            this.answerSlots = answerSlots.create(y,z,'Cadre').setScale(.2).setName(index).setInteractive({dropZone: true});
+            this.answerSlots = answerSlots.create(gameOptions.answerSlotsSizeX,gameOptions.answerSlotsSizeY,'Cadre').setScale(.2).setName(index).setInteractive({dropZone: true});
             this.answerSlots.smoothed = false
-            y = y + 100
-        });
+            gameOptions.answerSlotsSizeX = gameOptions.answerSlotsSizeX + 100       
+ });
 
         // DropZone and Drag Inputs
         // TODO MM: Add to gameOption
