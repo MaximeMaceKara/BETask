@@ -48,8 +48,8 @@
 var alphabets = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
 'M', 'N', 'O', 'P', 'Q', 'R',  'S', 'T', 'U', 'V', 'W', 'X',
 'Y', 'Z' ];
-var selectedWord = "COURIR";
-var solved = selectedWord.split('');
+var selectedWord;
+var solved;
 var guess;
 var guesses = [];
 var level = 1;
@@ -83,11 +83,9 @@ export default class GameScene extends Phaser.Scene {
      */
     preload() {
 
-        this.load.pack({
-            key:'level_1',
-            url:'assets/json/levels.json'
-        });
-        // this.load.pack('level_1', 'assets/json/levels.json');
+        this.load.json('levels','assets/json/levels_copy.json');
+        var test = this.cache.json.get('levels');
+        console.log(test)
         this.load.spritesheet('backgroundImage','assets/backgroundImage.jpg',{
             frameWidth: 1920,
             frameHeight: 1080
@@ -110,14 +108,44 @@ export default class GameScene extends Phaser.Scene {
      */
     create() {
         this.add.image(950,450,'backgroundImage');
+        // Init LevelData JSON
+        var levelData = this.cache.json.get('levels');
+        // Get Array of Levels
+        var levelDataLevels = levelData.Levels
+        cadres = this.physics.add.staticGroup();
+        // For Each Level
+        levelDataLevels.forEach((x)=>{
+            // Verification of Level
+            if(x.ID == level){
+                selectedWord = x.word
+                solved = selectedWord.split('');
+                // For each Images
+                x.images.forEach((y)=>{
+                    if(y.key.indexOf('1') > -1){
+                        cadres.create(700,150,y.url).setScale(gameOptions.imageSize);
+                        console.log(y)
+                    }
+                    if(y.key.indexOf('2') > -1){
+                        cadres.create(700,450,y.url).setScale(gameOptions.imageSize);
+                        console.log(y)
 
+                    }
+                    if(y.key.indexOf('3') > -1){
+                        cadres.create(1150,150,y.url).setScale(gameOptions.imageSize);
+                        console.log(y)
+
+                    }
+                    if(y.key.indexOf('4') > -1){
+                        cadres.create(1150,450,y.url).setScale(gameOptions.imageSize);
+                        console.log(y)
+
+                    }
+
+                })
+            }
+        })
         // TODO MM: .65 needs to be a gameOptions
         // 4 Images ( no images yet )
-        cadres = this.physics.add.staticGroup();
-        cadres.create(700,150,'courir1').setScale(gameOptions.imageSize);
-        cadres.create(700,450,'courir2').setScale(gameOptions.imageSize);
-        cadres.create(1150,150,'courir3').setScale(gameOptions.imageSize);
-        cadres.create(1150,450,'courir4').setScale(gameOptions.imageSize);
 
         // Level title
         titleMenu = this.add.text(null, null, gameOptions.titleText + level, {
