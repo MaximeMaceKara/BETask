@@ -48,7 +48,7 @@
 var alphabets = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
 'M', 'N', 'O', 'P', 'Q', 'R',  'S', 'T', 'U', 'V', 'W', 'X',
 'Y', 'Z' ];
-var selectedWord = "BALLET";
+var selectedWord = "LION";
 var solved = selectedWord.split('');
 var guess;
 var guesses = [];
@@ -63,12 +63,12 @@ var titleChances;
 /**
  * Class scene in game mode
  */
-export default class Scene21 extends Phaser.Scene {
+export default class Scene24 extends Phaser.Scene {
     /**
      * Constructor
      */
     constructor() {
-        super('Scene21');
+        super('Scene24');
     }
 
     /**
@@ -83,7 +83,7 @@ export default class Scene21 extends Phaser.Scene {
     preload() {
 
         this.load.pack({
-            key:'level_21',
+            key:'level_24',
             url:'assets/json/levels.json'
         });
         // this.load.pack('level_1', 'assets/json/levels.json');
@@ -114,10 +114,10 @@ export default class Scene21 extends Phaser.Scene {
         // 4 Images ( no images yet )
 
         cadres = this.physics.add.staticGroup();
-        cadres.create(700,150,'ballet1').setScale(gameOptions.imageSize);
-        cadres.create(700,450,'ballet2').setScale(gameOptions.imageSize);
-        cadres.create(1150,150,'ballet3').setScale(gameOptions.imageSize);
-        cadres.create(1150,450,'ballet4').setScale(gameOptions.imageSize);
+        cadres.create(700,150,'lion1').setScale(gameOptions.imageSize);
+        cadres.create(700,450,'lion2').setScale(gameOptions.imageSize);
+        cadres.create(1150,150,'lion3').setScale(gameOptions.imageSize);
+        cadres.create(1150,450,'lion4').setScale(gameOptions.imageSize);
 
         // Level title
         titleMenu = this.add.text(null, null, gameOptions.titleText + this.data.level, {
@@ -262,7 +262,7 @@ export default class Scene21 extends Phaser.Scene {
     nextGame() {
         level = this.data.level;
         level++
-        this.scene.start('Scene22',{
+        this.scene.start('Scene24',{
             level: level
         });
     }

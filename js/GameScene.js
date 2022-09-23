@@ -32,6 +32,9 @@
     // Text content
     titleText: 'Level ',
 
+    // Text Chances Left
+    titleChance: 'Vies restants : ',
+
 
     // Image Size
     imageSize: 0.65,
@@ -50,10 +53,12 @@ var solved = selectedWord.split('');
 var guess;
 var guesses = [];
 var level = 1;
+var chances = 3;
 var cadres;
 var answerSlots;
 var preload = true;
 var titleMenu;
+var titleChances;
 
 /**
  * Class scene in game mode
@@ -77,6 +82,12 @@ export default class GameScene extends Phaser.Scene {
      * Load the game assets.
      */
     preload() {
+
+        this.load.pack({
+            key:'level_1',
+            url:'assets/json/levels.json'
+        });
+        // this.load.pack('level_1', 'assets/json/levels.json');
         this.load.spritesheet('backgroundImage','assets/backgroundImage.jpg',{
             frameWidth: 1920,
             frameHeight: 1080
@@ -85,22 +96,6 @@ export default class GameScene extends Phaser.Scene {
             frameWidth: 400,
             frameHeight: 400
         });
-        this.load.spritesheet('Courir-1','assets/Level_Images/Level_1/courir-1.jpg',{
-            frameWidth: 400,
-            frameHeight: 400
-        })
-        this.load.spritesheet('Courir-2','assets/Level_Images/Level_1/courir-2.jpg',{
-            frameWidth: 400,
-            frameHeight: 400
-        })
-        this.load.spritesheet('Courir-3','assets/Level_Images/Level_1/courir-3.jpg',{
-            frameWidth: 400,
-            frameHeight: 400
-        })
-        this.load.spritesheet('Courir-4','assets/Level_Images/Level_1/courir-4.jpg',{
-            frameWidth: 400,
-            frameHeight: 400
-        })
         // TODO Done MM: Try for loop to init images
         alphabets.forEach((x)=>{
             this.load.image(x,`assets/lettres_images/${x}.png`);
@@ -119,10 +114,10 @@ export default class GameScene extends Phaser.Scene {
         // TODO MM: .65 needs to be a gameOptions
         // 4 Images ( no images yet )
         cadres = this.physics.add.staticGroup();
-        cadres.create(700,150,'Courir-1').setScale(gameOptions.imageSize);
-        cadres.create(700,450,'Courir-2').setScale(gameOptions.imageSize);
-        cadres.create(1150,150,'Courir-3').setScale(gameOptions.imageSize);
-        cadres.create(1150,450,'Courir-4').setScale(gameOptions.imageSize);
+        cadres.create(700,150,'courir1').setScale(gameOptions.imageSize);
+        cadres.create(700,450,'courir2').setScale(gameOptions.imageSize);
+        cadres.create(1150,150,'courir3').setScale(gameOptions.imageSize);
+        cadres.create(1150,450,'courir4').setScale(gameOptions.imageSize);
 
         // Level title
         titleMenu = this.add.text(null, null, gameOptions.titleText + level, {
@@ -131,12 +126,21 @@ export default class GameScene extends Phaser.Scene {
             fontSize: gameOptions.titleFontSize,
             fill: gameOptions.titleColor,
         })
+        titleChances = this.add.text(null,null,gameOptions.titleChance + chances, {
+                fontFamily: gameOptions.textFontFamily,
+                fontStyle: gameOptions.textFontStyle,
+                fontSize: gameOptions.titleFontSize,
+                fill: gameOptions.titleColor
+        })
+
+          titleChances.x = this.game.config.width / 1.02 - titleChances.width / 1.02;
+        titleChances.y = this.game.config.height * 0.04 - titleChances.height / 2;
 
         // AnswerSlots Dropzones
         answerSlots = this.physics.add.staticGroup();
 
         // TODO MM: Add in gameOptions
-
+        gameOptions.answerSlotsSizeX = 650,
 
         solved.forEach((x,index)=>{
             // Set name of image to Index of solved array
@@ -188,21 +192,27 @@ export default class GameScene extends Phaser.Scene {
 
                 // Verify two strings
                 if(solved_joined == guess){
-                    guess = null
-                    // Next lvl
-                    level++
-                    self.nextGame();
+                    if(level < 25){
+                        guess = null
+                        // Next lvl
+                        level++
+                        self.nextGame();
+                    }
+                    self.gameOver();
                 }
                 else{
                     // WIP WIP WIP
-                    console.log("Fail");
-                    // self.answerSlots.disableBody(true,true)
+                    chances--
+                    console.log(chances)
                     guesses.splice(guesses.indexOf(gameObject.name),1);
                     gameObject.x = gameObject.input.dragStartX;
                     gameObject.y = gameObject.input.dragStartY;
                     preload = false;
                     self.create();
-                    console.log(alphabets);
+                    if(chances < 1){
+                        self.gameOver();
+                    }
+
                 }
             }
 
@@ -215,19 +225,19 @@ export default class GameScene extends Phaser.Scene {
         var x = 750;
 
         if(preload){
-        // Shuffles the alphabets + adding solved to the alphabets
-        alphabets = self.shuffle(alphabets);
-        // TODO MM: GameOption
-        if(solved.length >= 6){
-            alphabets = alphabets.slice(0,10)
-        }
-        else {
-            alphabets = alphabets.slice(0,6)
-        }
-        alphabets = self.shuffle(alphabets.concat(solved));
+            // Shuffles the alphabets + adding solved to the alphabets
+            alphabets = self.shuffle(alphabets);
+            // TODO MM: GameOption
+            if(solved.length >= 6){
+                alphabets = alphabets.slice(0,10)
+            }
+            else {
+                alphabets = alphabets.slice(0,6)
+            }
+            alphabets = self.shuffle(alphabets.concat(solved));
 
-        // Places the buttons on the bottom of the screen
-    }
+            // Places the buttons on the bottom of the screen
+        }
         alphabets.forEach((a)=>{
             if (y > 1250){
                 y = 450;
@@ -253,13 +263,20 @@ export default class GameScene extends Phaser.Scene {
     nextGame() {
         console.log(level)
         this.scene.start('Scene2',{
-            level: level
+            level: level,
+            chances : chances
         });
     }
 
-    /**
-     *
-     */
+    gameOver(){
+        this.scene.start('EndScene',{
+            level : level,
+            chances : chances
+        })
+    }
+/**
+*
+*/
     updateLevel() {
         guesses = [];
         // TODO MM: Use an unique global variable

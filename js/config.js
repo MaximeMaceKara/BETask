@@ -22,6 +22,8 @@ import Scene20 from './Scene20.js';
 import Scene21 from './Scene21.js';
 import Scene22 from './Scene22.js';
 import Scene23 from './Scene23.js';
+import Scene24 from './Scene24.js';
+import Scene25 from './Scene25.js';
 import StartScene from './StartScene.js';
 
 /**
@@ -43,7 +45,7 @@ const configurations = {
             debut: true,
         },
     },
-    scene: [GameScene,Scene2,Scene3,Scene4,Scene5,Scene6,Scene7,Scene8,Scene9,Scene10,Scene11,Scene12,Scene13,Scene14,Scene15,Scene16,Scene17,Scene18,Scene19,Scene20,Scene21,Scene22,Scene23,StartScene, EndScene],
+    scene: [GameScene,StartScene,Scene2,Scene3,Scene4,Scene5,Scene6,Scene7,Scene8,Scene9,Scene10,Scene11,Scene12,Scene13,Scene14,Scene15,Scene16,Scene17,Scene18,Scene19,Scene20,Scene21,Scene22,Scene23,Scene24,Scene25,EndScene],
 };
 
 /**

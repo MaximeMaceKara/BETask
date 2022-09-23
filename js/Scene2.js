@@ -32,13 +32,17 @@
     // Text content
     titleText: 'Level ',
 
+    // Text Chances Left
+    titleChance: 'Vies restants : ',
+
 
     // Image Size
     imageSize: 0.65,
 
-   // answerSlots 
+   // answerSlots
     answerSlotsSizeX:650,
-    answerSlotsSizeY:650
+    answerSlotsSizeY:650,
+
 }
 
 var alphabets = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
@@ -49,10 +53,12 @@ var solved = selectedWord.split('');
 var guess;
 var guesses = [];
 var level;
+var chances;
 var cadres;
 var answerSlots;
 var preload = true;
 var titleMenu;
+var titleChances;
 
 /**
  * Class scene in game mode
@@ -76,6 +82,12 @@ export default class Scene2 extends Phaser.Scene {
      * Load the game assets.
      */
     preload() {
+
+        this.load.pack({
+            key:'level_2',
+            url:'assets/json/levels.json'
+        });
+        // this.load.pack('level_1', 'assets/json/levels.json');
         this.load.spritesheet('backgroundImage','assets/backgroundImage.jpg',{
             frameWidth: 1920,
             frameHeight: 1080
@@ -84,23 +96,7 @@ export default class Scene2 extends Phaser.Scene {
             frameWidth: 400,
             frameHeight: 400
         });
-        this.load.spritesheet('Eating1','assets/Level_Images/Level_2/eating1.jpg',{
-            frameWidth: 400,
-            frameHeight: 400
-        })
-        this.load.spritesheet('Eating2','assets/Level_Images/Level_2/eating2.jpg',{
-            frameWidth: 400,
-            frameHeight: 400
-        })
-        this.load.spritesheet('Eating3','assets/Level_Images/Level_2/eating3.jpg',{
-            frameWidth: 400,
-            frameHeight: 400
-        })
-        this.load.spritesheet('Eating4','assets/Level_Images/Level_2/eating4.jpg',{
-            frameWidth: 400,
-            frameHeight: 400
-        })
-        // TODO MM: Try for loop to init images
+        // TODO Done MM: Try for loop to init images
         alphabets.forEach((x)=>{
             this.load.image(x,`assets/lettres_images/${x}.png`);
         });
@@ -117,11 +113,12 @@ export default class Scene2 extends Phaser.Scene {
 
         // TODO MM: .65 needs to be a gameOptions
         // 4 Images ( no images yet )
+
         cadres = this.physics.add.staticGroup();
-        cadres.create(700,150,'Eating1').setScale(gameOptions.imageSize);
-        cadres.create(700,450,'Eating2').setScale(gameOptions.imageSize);
-        cadres.create(1150,150,'Eating3').setScale(gameOptions.imageSize);
-        cadres.create(1150,450,'Eating4').setScale(gameOptions.imageSize);
+        cadres.create(700,150,'eating1').setScale(gameOptions.imageSize);
+        cadres.create(700,450,'eating2').setScale(gameOptions.imageSize);
+        cadres.create(1150,150,'eating3').setScale(gameOptions.imageSize);
+        cadres.create(1150,450,'eating4').setScale(gameOptions.imageSize);
 
         // Level title
         titleMenu = this.add.text(null, null, gameOptions.titleText + this.data.level, {
@@ -130,18 +127,27 @@ export default class Scene2 extends Phaser.Scene {
             fontSize: gameOptions.titleFontSize,
             fill: gameOptions.titleColor,
         })
+     titleChances = this.add.text(null,null,gameOptions.titleChance + this.data.chances, {
+            fontFamily: gameOptions.textFontFamily,
+            fontStyle: gameOptions.textFontStyle,
+            fontSize: gameOptions.titleFontSize,
+            fill: gameOptions.titleColor
+})
+
+        titleChances.x = this.game.config.width / 1.02 - titleChances.width / 1.02;
+        titleChances.y = this.game.config.height * 0.04 - titleChances.height / 2;
 
         // AnswerSlots Dropzones
         answerSlots = this.physics.add.staticGroup();
 
         // TODO MM: Add in gameOptions
-
+        gameOptions.answerSlotsSizeX = 650,
 
         solved.forEach((x,index)=>{
             // Set name of image to Index of solved array
             this.answerSlots = answerSlots.create(gameOptions.answerSlotsSizeX,gameOptions.answerSlotsSizeY,'Cadre').setScale(.2).setName(index).setInteractive({dropZone: true});
             this.answerSlots.smoothed = false
-            gameOptions.answerSlotsSizeX = gameOptions.answerSlotsSizeX + 100       
+            gameOptions.answerSlotsSizeX = gameOptions.answerSlotsSizeX + 100
  });
 
         // DropZone and Drag Inputs
@@ -187,20 +193,26 @@ export default class Scene2 extends Phaser.Scene {
 
                 // Verify two strings
                 if(solved_joined == guess){
-                    guess = null
-                    // Next lvl
-                    self.nextGame();
+                    if(level < 25){
+                        guess = null
+                        // Next lvl
+                        level++
+                        self.nextGame();
+                    }
+                    self.gameOver();
                 }
                 else{
                     // WIP WIP WIP
-                    console.log("Fail");
-                    // self.answerSlots.disableBody(true,true)
+                    chances--
+                    console.log(chances)
                     guesses.splice(guesses.indexOf(gameObject.name),1);
                     gameObject.x = gameObject.input.dragStartX;
                     gameObject.y = gameObject.input.dragStartY;
                     preload = false;
                     self.create();
-                    console.log(alphabets);
+                    if(chances < 1){
+                        self.gameOver();
+                    }
                 }
             }
 
@@ -213,19 +225,19 @@ export default class Scene2 extends Phaser.Scene {
         var x = 750;
 
         if(preload){
-            // Shuffles the alphabets + adding solved to the alphabets
-            alphabets = self.shuffle(alphabets);
-            // TODO MM: GameOption
-            if(solved.length >= 6){
-                alphabets = alphabets.slice(0,10)
-            }
-            else {
-                alphabets = alphabets.slice(0,6)
-            }
-            alphabets = self.shuffle(alphabets.concat(solved));
-
-            // Places the buttons on the bottom of the screen
+        // Shuffles the alphabets + adding solved to the alphabets
+        alphabets = self.shuffle(alphabets);
+        // TODO MM: GameOption
+        if(solved.length >= 6){
+            alphabets = alphabets.slice(0,10)
         }
+        else {
+            alphabets = alphabets.slice(0,6)
+        }
+        alphabets = self.shuffle(alphabets.concat(solved));
+
+        // Places the buttons on the bottom of the screen
+    }
         alphabets.forEach((a)=>{
             if (y > 1250){
                 y = 450;
@@ -251,15 +263,24 @@ export default class Scene2 extends Phaser.Scene {
     nextGame() {
         level = this.data.level;
         level++
+        console.log(level)
         this.scene.start('Scene3',{
             level: level
         });
     }
 
-    /**
-     *
-     */
-     updateLevel() {
+    gameOver(){
+        level = this.data.level;
+        chances = this.data.chances;
+        this.scene.start('EndScene',{
+            level : level,
+            chances : chances
+        })
+    }
+/**
+*
+*/
+    updateLevel() {
         guesses = [];
         // TODO MM: Use an unique global variable
         titleMenu.setText(gameOptions.titleText + level);

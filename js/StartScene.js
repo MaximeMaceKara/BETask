@@ -90,7 +90,7 @@ export default class StartScene extends Phaser.Scene {
         titleMenu.x = this.game.config.width / 2 - titleMenu.width / 2;
         titleMenu.y = this.game.config.height * 0.09 - titleMenu.height / 2;
 
-        // Init player vs player button
+        // Init start button
         let btn = this.add.image(this.game.config.width / 2, (this.game.config.height) * 0.40, 'btnClassic')
             .setScale(gameOptions.btnScale)
             .setInteractive()
