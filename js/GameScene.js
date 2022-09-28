@@ -46,8 +46,8 @@
 var alphabets = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
 'M', 'N', 'O', 'P', 'Q', 'R',  'S', 'T', 'U', 'V', 'W', 'X',
 'Y', 'Z' ];
-var selectedWord = "COURIR";
-var solved = selectedWord.split('');
+var selectedWord;
+var solved;
 var guess;
 var guesses = [];
 var level = 1;
@@ -82,6 +82,13 @@ export default class GameScene extends Phaser.Scene {
      * Load the game assets.
      */
     preload() {
+<<<<<<< HEAD
+=======
+
+        this.load.json('levels','assets/json/levels_copy.json');
+        var test = this.cache.json.get('levels');
+        console.log(test)
+>>>>>>> ec1bbea1c007c3551ba9cda1d69e32c0fbd70155
         this.load.spritesheet('backgroundImage','assets/backgroundImage.jpg',{
             frameWidth: 1920,
             frameHeight: 1080
@@ -106,13 +113,47 @@ export default class GameScene extends Phaser.Scene {
         let data = this.cache.json.get('levelData');
 
         this.add.image(950,450,'backgroundImage');
-
-        // 4 Images ( no images yet )
+        // Init LevelData JSON
+        var levelData = this.cache.json.get('levels');
+        // Get Array of Levels
+        var levelDataLevels = levelData.Levels
         cadres = this.physics.add.staticGroup();
-        cadres.create(700,150,'courir1').setScale(gameOptions.imageSize);
-        cadres.create(700,450,'courir2').setScale(gameOptions.imageSize);
-        cadres.create(1150,150,'courir3').setScale(gameOptions.imageSize);
-        cadres.create(1150,450,'courir4').setScale(gameOptions.imageSize);
+        // For Each Level
+        levelDataLevels.forEach((x)=>{
+            // Verification of Level
+            if(x.ID == level){
+                selectedWord = x.word
+                solved = selectedWord.split('');
+                // For each Images
+                x.images.forEach((y)=>{
+                    if(y.key.indexOf('1') > -1){
+                        cadres.create(700,150,y.url).setScale(gameOptions.imageSize);
+                        console.log(y)
+                    }
+                    if(y.key.indexOf('2') > -1){
+                        cadres.create(700,450,y.url).setScale(gameOptions.imageSize);
+                        console.log(y)
+
+                    }
+                    if(y.key.indexOf('3') > -1){
+                        cadres.create(1150,150,y.url).setScale(gameOptions.imageSize);
+                        console.log(y)
+
+                    }
+                    if(y.key.indexOf('4') > -1){
+                        cadres.create(1150,450,y.url).setScale(gameOptions.imageSize);
+                        console.log(y)
+
+                    }
+
+<<<<<<< HEAD
+=======
+                })
+            }
+        })
+        // TODO MM: .65 needs to be a gameOptions
+>>>>>>> ec1bbea1c007c3551ba9cda1d69e32c0fbd70155
+        // 4 Images ( no images yet )
 
         // Level title
         titleMenu = this.add.text(null, null, gameOptions.titleText + level, {
