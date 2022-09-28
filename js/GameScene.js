@@ -35,14 +35,12 @@
     // Text Chances Left
     titleChance: 'Vies restants : ',
 
-
     // Image Size
     imageSize: 0.65,
 
-   // answerSlots
+    // answerSlots
     answerSlotsSizeX:650,
     answerSlotsSizeY:650,
-
 }
 
 var alphabets = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
@@ -59,6 +57,8 @@ var answerSlots;
 var preload = true;
 var titleMenu;
 var titleChances;
+var y = 450;
+var x = 750;
 
 /**
  * Class scene in game mode
@@ -82,36 +82,31 @@ export default class GameScene extends Phaser.Scene {
      * Load the game assets.
      */
     preload() {
-
-        this.load.pack({
-            key:'level_1',
-            url:'assets/json/levels.json'
-        });
-        // this.load.pack('level_1', 'assets/json/levels.json');
         this.load.spritesheet('backgroundImage','assets/backgroundImage.jpg',{
             frameWidth: 1920,
             frameHeight: 1080
         });
-        this.load.spritesheet('Cadre','assets/Cadre_blue.png',{
+
+        this.load.spritesheet('cadre','assets/Cadre_blue.png',{
             frameWidth: 400,
             frameHeight: 400
         });
-        // TODO Done MM: Try for loop to init images
-        alphabets.forEach((x)=>{
+
+        alphabets.forEach((x) => {
             this.load.image(x,`assets/lettres_images/${x}.png`);
         });
-        // @WIP MM
-        // this.load.image('Correct','assets/correct.png');
-        // this.load.image('Incorrect','assets/incorrect.png');
     }
 
     /**
      * Create and init assets
      */
     create() {
+        this.load.json('levelData', './assets/json/levels.json');
+
+        let data = this.cache.json.get('levelData');
+
         this.add.image(950,450,'backgroundImage');
 
-        // TODO MM: .65 needs to be a gameOptions
         // 4 Images ( no images yet )
         cadres = this.physics.add.staticGroup();
         cadres.create(700,150,'courir1').setScale(gameOptions.imageSize);
@@ -126,6 +121,7 @@ export default class GameScene extends Phaser.Scene {
             fontSize: gameOptions.titleFontSize,
             fill: gameOptions.titleColor,
         })
+
         titleChances = this.add.text(null,null,gameOptions.titleChance + chances, {
                 fontFamily: gameOptions.textFontFamily,
                 fontStyle: gameOptions.textFontStyle,
@@ -133,40 +129,38 @@ export default class GameScene extends Phaser.Scene {
                 fill: gameOptions.titleColor
         })
 
-          titleChances.x = this.game.config.width / 1.02 - titleChances.width / 1.02;
+        titleChances.x = this.game.config.width / 1.02 - titleChances.width / 1.02;
         titleChances.y = this.game.config.height * 0.04 - titleChances.height / 2;
 
-        // AnswerSlots Dropzones
+        // AnswerSlots dropzone
         answerSlots = this.physics.add.staticGroup();
 
-        // TODO MM: Add in gameOptions
-        gameOptions.answerSlotsSizeX = 650,
-
-        solved.forEach((x,index)=>{
+        solved.forEach((x,index) => {
             // Set name of image to Index of solved array
-            this.answerSlots = answerSlots.create(gameOptions.answerSlotsSizeX,gameOptions.answerSlotsSizeY,'Cadre').setScale(.2).setName(index).setInteractive({dropZone: true});
+            this.answerSlots = answerSlots.create(gameOptions.answerSlotsSizeX,gameOptions.answerSlotsSizeY,'cadre')
+                .setScale(.2)
+                .setName(index)
+                .setInteractive({dropZone: true});
+
             this.answerSlots.smoothed = false
             gameOptions.answerSlotsSizeX = gameOptions.answerSlotsSizeX + 100
- });
+        });
 
-        // DropZone and Drag Inputs
-        // TODO MM: Add to gameOption
+        // DropZone and drag inputs
         this.input.dragDistanceThreshold = 16;
-            this.input.on('drag',(pointer,gameObject, dragX, dragY)=>{
-                gameObject.x = dragX;
-                gameObject.y = dragY;
 
-            });
+        this.input.on('drag',(pointer,gameObject, dragX, dragY) => {
+            gameObject.x = dragX;
+            gameObject.y = dragY;
+        });
 
-        this.input.on('dragstart', function (pointer, gameObject) {
+        this.input.on('dragstart', (pointer, gameObject) => {
             this.children.bringToTop(gameObject);
         }, this);
 
-
-        this.input.on('drop', function (pointer, gameObject, dropZone) {
+        this.input.on('drop', (pointer, gameObject, dropZone) => {
             gameObject.x = dropZone.x;
             gameObject.y = dropZone.y;
-
             // Adding letter to guesses Array thx to Index of solved
             guesses[dropZone.name] = gameObject.name
             gameObject.input.enabled = false;
@@ -176,16 +170,11 @@ export default class GameScene extends Phaser.Scene {
         self = this;
 
         this.input.on('dragend', function (pointer, gameObject, dropped) {
-
-            if (!dropped)
-            {
-                gameObject.x = gameObject.input.dragStartX;
-                gameObject.y = gameObject.input.dragStartY;
-            }
+            gameObject.x = (!dropped) ? gameObject.input.dragStartX: gameObject.x;
+            gameObject.y = (!dropped) ? gameObject.input.dragStartY: gameObject.y;
 
             // Verification of solved and guesses length
-            if(solved.length == guesses.length && !guesses.includes(undefined))
-            {
+            if(solved.length == guesses.length && !guesses.includes(undefined)) {
                 // Array to String
                 guess = guesses.join('');
                 var solved_joined = solved.join('');
@@ -201,94 +190,71 @@ export default class GameScene extends Phaser.Scene {
                     self.gameOver();
                 }
                 else{
-                    // WIP WIP WIP
                     chances--
-                    console.log(chances)
+
                     guesses.splice(guesses.indexOf(gameObject.name),1);
                     gameObject.x = gameObject.input.dragStartX;
                     gameObject.y = gameObject.input.dragStartY;
-                    preload = false;
-                    self.create();
-                    if(chances < 1){
-                        self.gameOver();
-                    }
 
+                    preload = false;
+
+                    self.create();
+
+                    if(chances < 1) self.gameOver();
                 }
             }
-
-
         });
 
         self = this
-        // TODO MM: Game option
-        var y = 450;
-        var x = 750;
 
         if(preload){
             // Shuffles the alphabets + adding solved to the alphabets
             alphabets = self.shuffle(alphabets);
-            // TODO MM: GameOption
-            if(solved.length >= 6){
-                alphabets = alphabets.slice(0,10)
-            }
-            else {
-                alphabets = alphabets.slice(0,6)
-            }
-            alphabets = self.shuffle(alphabets.concat(solved));
 
-            // Places the buttons on the bottom of the screen
+            if(solved.length >= 6) alphabets = alphabets.slice(0,10)
+            else alphabets = alphabets.slice(0,6)
+
+            alphabets = self.shuffle(alphabets.concat(solved));
         }
-        alphabets.forEach((a)=>{
+
+        alphabets.forEach((a) => {
             if (y > 1250){
                 y = 450;
                 x = 850;
             }
 
-            var sprite = this.add.image(y,x,a).setScale(.5).setInteractive().setName(a);
+            var sprite = this.add.image(y,x,a)
+                .setScale(.5)
+                .setInteractive()
+                .setName(a);
+
             this.input.setDraggable(sprite);
+
             y = y + 100;
         });
-    }
-
-    /**
-     * Update the scene frame by frame
-     */
-    update() {
-        // TODO update loop cycle
     }
 
     /**
      * Manage game over context
      */
     nextGame() {
-        console.log(level)
-        this.scene.start('Scene2',{
-            level: level,
-            chances : chances
-        });
+        this.scene.start('Scene2', { level: level, chances: chances });
     }
 
-    gameOver(){
-        this.scene.start('EndScene',{
-            level : level,
-            chances : chances
-        })
-    }
-/**
-*
-*/
+    /**
+     * Update level
+     */
     updateLevel() {
         guesses = [];
-        // TODO MM: Use an unique global variable
         titleMenu.setText(gameOptions.titleText + level);
     }
 
     /**
      * Shuffle the alphabets + solved
      *
-     * @param {array} array - ???
+     * @param {array} array
      *
-     * @returns {array} array - ???
+     * @returns {array} array
      */
     shuffle(array) {
         // Shuffle Array
@@ -298,10 +264,16 @@ export default class GameScene extends Phaser.Scene {
           randomIndex = Math.floor(Math.random() * currentIndex);
           currentIndex--;
 
-          [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
+          [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
         }
 
         return array;
+    }
+
+    /**
+     * Go to end scene
+     */
+    gameOver(){
+        this.scene.start('EndScene',{ level: level, chances: chances });
     }
 }

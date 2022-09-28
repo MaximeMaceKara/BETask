@@ -43,12 +43,12 @@ export default class EndScene extends Phaser.Scene {
     }
 
     /**
-     * Init the scene with data sent in another scene
-     * @param {int} data - collect the data sent from the previous scene
+     * Init the scene with data
+     *
+     * @param {int} data - collect the data
      */
     init(data) {
         this.data = data;
-        // TODO get data from last scene
     }
 
     /**
@@ -58,7 +58,6 @@ export default class EndScene extends Phaser.Scene {
         this.load.svg('btnClassic', 'assets/btnClassic.svg');
         this.load.svg('btnClassicHover', 'assets/btnClassicHover.svg');
         this.load.svg('board', 'assets/board.svg');
-        // TODO Load assets
 
         // Load Sound
         this.load.audio('start',['./sounds/start.wav']);
@@ -71,6 +70,7 @@ export default class EndScene extends Phaser.Scene {
         this.add.graphics()
             .fillGradientStyle(gameOptions.bgColor1, gameOptions.bgColor2, gameOptions.bgColor3, gameOptions.bgColor4, gameOptions.bgColor5)
             .fillRect(0, 0, this.game.config.width, this.game.config.height);
+
         this.startSound = this.sound.add('start');
         this.startSound.play();
 
@@ -123,7 +123,6 @@ export default class EndScene extends Phaser.Scene {
             .setPadding(10)
             .setStyle({
                 fontFamily: gameOptions.textFontFamily,
-                // color: gameOptions.btnColor,
                 color: gameOptions.textColor,
                 fontSize: gameOptions.textFontSize
         });
@@ -139,6 +138,7 @@ export default class EndScene extends Phaser.Scene {
         let resultText = this.add.text(null,null, endgameResult,{
             fontSize: gameOptions.textFontSize,
         });
+
         resultText.x = this.game.config.width / 2 - resultText.width / 2 + 10;
         resultText.y = this.game.config.height * 0.50 - resultText.height / 2;
 
@@ -156,22 +156,12 @@ export default class EndScene extends Phaser.Scene {
 
         liveText.x = this.game.config.width / 2 - liveText.width / 2 + 10;
         liveText.y = this.game.config.height * 0.69 - liveText.height / 2;
-
-
-
-
-
-
-
-
-        // TODO init game object
     }
 
     /**
      * Go to Main scene
      */
     goToStartScene() {
-        this.scene.restart('GameScene');
         this.scene.start('StartScene');
     }
 }

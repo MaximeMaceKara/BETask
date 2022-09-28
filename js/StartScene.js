@@ -78,7 +78,7 @@ export default class StartScene extends Phaser.Scene {
 
         // Init border menu
         this.add.image(this.game.config.width / 2, this.game.config.height / 2, 'board')
-        .setScale(gameOptions.boardScale);
+            .setScale(gameOptions.boardScale);
 
         let titleMenu = this.add.text(null, null, gameOptions.titleText, {
             fontFamily: gameOptions.textFontFamily,
@@ -96,15 +96,15 @@ export default class StartScene extends Phaser.Scene {
             .setInteractive()
             .on('pointerover', () => {
                 btn.setTint(gameOptions.btnTintColor)
-                fourimg1mot.setTint(gameOptions.btnTextTintColor)
+                fourImg1Word.setTint(gameOptions.btnTextTintColor)
             })
             .on('pointerout', () => {
                 btn.clearTint()
-                fourimg1mot.clearTint()
+                fourImg1Word.clearTint()
             }).on('pointerdown', () => this.goToGameScene())
 
         // Init title
-        let fourimg1mot = this.add.text(null, null, gameOptions.btnText)
+        let fourImg1Word = this.add.text(null, null, gameOptions.btnText)
             .setPadding(10)
             .setStyle({
                 fontFamily: gameOptions.textFontFamily,
@@ -112,20 +112,14 @@ export default class StartScene extends Phaser.Scene {
                 fontSize: gameOptions.textFontSize
             });
 
-        fourimg1mot.x = this.game.config.width / 2 - fourimg1mot.width / 2;
-        fourimg1mot.y = this.game.config.height * 0.40 - fourimg1mot.height / 2;
-
-        // WIP MM: New integration game mode
-        // Manage mode choice
-        //btn.on('pointerdown', () => this.goToGameScene('playerVsComputer'));
-        //btn2.on('pointerdown', () => this.goToGameScene('computerVsPlayer'));
+        fourImg1Word.x = this.game.config.width / 2 - fourImg1Word.width / 2;
+        fourImg1Word.y = this.game.config.height * 0.40 - fourImg1Word.height / 2;
     }
 
     /**
      * Go to Main scene
      */
     goToGameScene() {
-        // Go to game scene
         this.scene.start('GameScene');
     }
 }
