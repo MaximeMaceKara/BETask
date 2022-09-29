@@ -1,0 +1,27 @@
+{
+    "levelID": "10",
+    "wordFind": "ROND",
+
+    "images":[
+        {
+            "type": "image",
+            "key": "round1",
+            "url":"assets/levelImg/level10/round1.jpg"
+        },
+        {
+            "type": "image",
+            "key": "round2",
+            "url":"assets/levelImg/level10/round2.jpg"
+        },
+        {
+            "type": "image",
+            "key": "round3",
+            "url":"assets/levelImg/level10/round3.jpg"
+        },
+        {
+            "type": "image",
+            "key": "round4",
+            "url":"assets/levelImg/level10/round4.jpg"
+        }
+    ]
+}

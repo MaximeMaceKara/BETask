@@ -32,6 +32,9 @@
     // Text content
     titleText: '4 IMAGES 1 MOT',
     btnText: 'Jouer',
+
+    // Anim params
+    animFadeSpeed:500,
 }
 
 
@@ -42,10 +45,11 @@ export default class StartScene extends Phaser.Scene {
     /**
      * Constructor
      */
-    constructor() {
-        super('StartScene');
-    }
+    constructor() { super('StartScene') }
 
+    /**
+     * Preload assets
+     */
     preload() {
         this.load.svg('btnClassic', 'assets/btnClassic.svg');
         this.load.svg('btnClassicHover', 'assets/btnClassicHover.svg');
@@ -80,6 +84,7 @@ export default class StartScene extends Phaser.Scene {
         this.add.image(this.game.config.width / 2, this.game.config.height / 2, 'board')
             .setScale(gameOptions.boardScale);
 
+        // Title menu
         let titleMenu = this.add.text(null, null, gameOptions.titleText, {
             fontFamily: gameOptions.textFontFamily,
             fontStyle: gameOptions.textFontStyle,
@@ -96,15 +101,15 @@ export default class StartScene extends Phaser.Scene {
             .setInteractive()
             .on('pointerover', () => {
                 btn.setTint(gameOptions.btnTintColor)
-                fourImg1Word.setTint(gameOptions.btnTextTintColor)
+                btnText.setTint(gameOptions.btnTextTintColor)
             })
             .on('pointerout', () => {
                 btn.clearTint()
-                fourImg1Word.clearTint()
-            }).on('pointerdown', () => this.goToGameScene())
+                btnText.clearTint()
+            }).on('pointerdown', () => this.goToLevelScene())
 
-        // Init title
-        let fourImg1Word = this.add.text(null, null, gameOptions.btnText)
+        // Init text button title
+        let btnText = this.add.text(null, null, gameOptions.btnText)
             .setPadding(10)
             .setStyle({
                 fontFamily: gameOptions.textFontFamily,
@@ -112,14 +117,19 @@ export default class StartScene extends Phaser.Scene {
                 fontSize: gameOptions.textFontSize
             });
 
-        fourImg1Word.x = this.game.config.width / 2 - fourImg1Word.width / 2;
-        fourImg1Word.y = this.game.config.height * 0.40 - fourImg1Word.height / 2;
+        btnText.x = this.game.config.width / 2 - btnText.width / 2;
+        btnText.y = this.game.config.height * 0.40 - btnText.height / 2;
     }
 
     /**
      * Go to Main scene
      */
-    goToGameScene() {
-        this.scene.start('GameScene');
+    goToLevelScene() {
+        // Fade out animation
+        this.cameras.main.fadeOut(gameOptions.animFadeSpeed, 0, 0, 0)
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.scene.start('LevelScene');
+        });
     }
 }

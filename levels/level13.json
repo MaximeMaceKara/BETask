@@ -1,0 +1,27 @@
+{
+    "levelID": "13",
+    "wordFind": "PRECIS",
+
+    "images":[
+        {
+            "type": "image",
+            "key": "accurate1",
+            "url":"assets/levelImg/level13/accurate1.jpg"
+        },
+        {
+            "type": "image",
+            "key": "accurate2",
+            "url":"assets/levelImg/level13/accurate2.jpg"
+        },
+        {
+            "type": "image",
+            "key": "accurate3",
+            "url":"assets/levelImg/level13/accurate3.jpg"
+        },
+        {
+            "type": "image",
+            "key": "accurate4",
+            "url":"assets/levelImg/level13/accurate4.jpg"
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "levelID": "7",
+    "wordFind": "CHANCE",
+
+    "images":[
+        {
+            "type": "image",
+            "key": "chance1",
+            "url":"assets/levelImg/level7/chance1.jpg"
+        },
+        {
+            "type": "image",
+            "key": "chance2",
+            "url":"assets/levelImg/level7/chance2.jpg"
+        },
+        {
+            "type": "image",
+            "key": "chance3",
+            "url":"assets/levelImg/level7/chance3.jpg"
+        },
+        {
+            "type": "image",
+            "key": "chance4",
+            "url":"assets/levelImg/level7/chance4.jpg"
+        }
+    ]
+}

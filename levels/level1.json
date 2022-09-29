@@ -1,0 +1,27 @@
+{
+    "levelID": "1",
+    "wordFind": "COURIR",
+
+    "images":[
+        {
+            "type": "image",
+            "key": "run1",
+            "url":"assets/levelImg/level1/run1.jpg"
+        },
+        {
+            "type": "image",
+            "key": "run2",
+            "url":"assets/levelImg/level1/run2.jpg"
+        },
+        {
+            "type": "image",
+            "key": "run3",
+            "url":"assets/levelImg/level1/run3.jpg"
+        },
+        {
+            "type": "image",
+            "key": "run4",
+            "url":"assets/levelImg/level1/run4.jpg"
+        }
+    ]
+}

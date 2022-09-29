@@ -1,0 +1,27 @@
+{
+    "levelID": "12",
+    "wordFind": "PREUVE",
+
+    "images":[
+        {
+            "type": "image",
+            "key": "evidence1",
+            "url":"assets/levelImg/level12/evidence1.png"
+        },
+        {
+            "type": "image",
+            "key": "evidence2",
+            "url":"assets/levelImg/level12/evidence2.jpg"
+        },
+        {
+            "type": "image",
+            "key": "evidence3",
+            "url":"assets/levelImg/level12/evidence3.jpg"
+        },
+        {
+            "type": "image",
+            "key": "evidence4",
+            "url":"assets/levelImg/level12/evidence4.jpg"
+        }
+    ]
+}

@@ -29,6 +29,9 @@ let gameOptions = {
     // Text content
     titleText: 'Fin de partie',
     retryText: 'Recommencer',
+    lifeScore: "Chances restants: ",
+    winText: "Vous avez gagné",
+    looseText: "Vous avez perdu"
 }
 
 /**
@@ -47,9 +50,7 @@ export default class EndScene extends Phaser.Scene {
      *
      * @param {int} data - collect the data
      */
-    init(data) {
-        this.data = data;
-    }
+    init(data) { this.data = data; }
 
     /**
      * Load the game assets.
@@ -76,7 +77,7 @@ export default class EndScene extends Phaser.Scene {
 
         this.time.addEvent({
             delay: 90000,
-            callback: ()=> {
+            callback:() => {
                 this.startSound.stop();
                 this.startSound = this.sound.add('start');
                 this.startSound.play();
@@ -86,8 +87,9 @@ export default class EndScene extends Phaser.Scene {
 
         // Init border menu
         this.add.image(this.game.config.width / 2, this.game.config.height / 2, 'board')
-        .setScale(gameOptions.boardScale);
+            .setScale(gameOptions.boardScale);
 
+        // Title menu
         let titleMenu = this.add.text(null,null,gameOptions.titleText,{
             fontFamily: gameOptions.textFontFamily,
             fontStyle: gameOptions.textFontStyle,
@@ -95,11 +97,10 @@ export default class EndScene extends Phaser.Scene {
             fill: gameOptions.titleColor,
         });
 
-        // Center Text
         titleMenu.x = this.game.config.width / 2 - titleMenu.width / 2;
         titleMenu.y = this.game.config.height * 0.09 - titleMenu.height / 2;
 
-        // Init retry button
+        // Retry button
         let btn = this.add
             .image(
                 this.game.config.width / 2,
@@ -110,15 +111,16 @@ export default class EndScene extends Phaser.Scene {
             .setInteractive()
             .on("pointerover",()=>{
                 btn.setTint(gameOptions.btnTintColor);
-                retry.clearTint();
+                btnText.clearTint();
             })
             .on("pointerout", () => {
                 btn.clearTint();
-                retry.clearTint();
+                btnText.clearTint();
               })
             .on("pointerdown", () => this.goToStartScene());
 
-        let retry = this.add
+        // Button text
+        let btnText = this.add
             .text(null,null,gameOptions.retryText)
             .setPadding(10)
             .setStyle({
@@ -127,14 +129,16 @@ export default class EndScene extends Phaser.Scene {
                 fontSize: gameOptions.textFontSize
         });
 
-        retry.x = this.game.config.width / 2 - retry.width / 2;
-        retry.y = this.game.config.height * 0.35 - retry.height / 2;
+        btnText.x = this.game.config.width / 2 - btnText.width / 2;
+        btnText.y = this.game.config.height * 0.35 - btnText.height / 2;
 
+        // State endgame
         let endgameResult =
             this.data.chances <= 0 || this.data.level < 25
-                ? "Vous avez perdu"
-                : "Vous avez gagné";
+                ? gameOptions.looseText
+                : gameOptions.winText;
 
+        // Result text
         let resultText = this.add.text(null,null, endgameResult,{
             fontSize: gameOptions.textFontSize,
         });
@@ -142,10 +146,11 @@ export default class EndScene extends Phaser.Scene {
         resultText.x = this.game.config.width / 2 - resultText.width / 2 + 10;
         resultText.y = this.game.config.height * 0.50 - resultText.height / 2;
 
+        // Life text
         let liveText = this.add.text(
             null,
             null,
-            "Chances restants: " +
+            gameOptions.lifeScore +
                 this.data.chances,
             {
                 fontFamily: gameOptions.textFontFamily,
@@ -161,7 +166,5 @@ export default class EndScene extends Phaser.Scene {
     /**
      * Go to Main scene
      */
-    goToStartScene() {
-        this.scene.start('StartScene');
-    }
+    goToStartScene() { this.scene.start('StartScene') }
 }

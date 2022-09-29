@@ -1,0 +1,27 @@
+{
+    "levelID": "19",
+    "wordFind": "CHEMIN",
+
+    "images":[
+        {
+            "type": "image",
+            "key": "path1",
+            "url":"assets/levelImg/level19/path1.jpg"
+        },
+        {
+            "type": "image",
+            "key": "path2",
+            "url":"assets/levelImg/level19/path2.jpg"
+        },
+        {
+            "type": "image",
+            "key": "path3",
+            "url":"assets/levelImg/level19/path3.jpg"
+        },
+        {
+            "type": "image",
+            "key": "path4",
+            "url":"assets/levelImg/level19/path4.jpg"
+        }
+    ]
+}

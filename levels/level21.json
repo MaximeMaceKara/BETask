@@ -1,0 +1,27 @@
+{
+    "levelID": "21",
+    "wordFind": "BALLET",
+
+    "images":[
+        {
+            "type": "image",
+            "key": "ballet1",
+            "url":"assets/levelImg/level21/ballet1.jpg"
+        },
+        {
+            "type": "image",
+            "key": "ballet2",
+            "url":"assets/levelImg/level21/ballet2.jpg"
+        },
+        {
+            "type": "image",
+            "key": "ballet3",
+            "url":"assets/levelImg/level21/ballet3.jpg"
+        },
+        {
+            "type": "image",
+            "key": "ballet4",
+            "url":"assets/levelImg/level21/ballet4.jpg"
+        }
+    ]
+}

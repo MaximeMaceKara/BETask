@@ -1,0 +1,27 @@
+{
+    "levelID": "18",
+    "wordFind": "PIQURE",
+
+    "images":[
+        {
+            "type": "image",
+            "key": "sting1",
+            "url":"assets/levelImg/level18/sting1.jpg"
+        },
+        {
+            "type": "image",
+            "key": "sting2",
+            "url":"assets/levelImg/level18/sting2.jpg"
+        },
+        {
+            "type": "image",
+            "key": "sting3",
+            "url":"assets/levelImg/level18/sting3.jpg"
+        },
+        {
+            "type": "image",
+            "key": "sting4",
+            "url":"assets/levelImg/level18/sting4.jpg"
+        }
+    ]
+}

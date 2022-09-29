@@ -1,0 +1,27 @@
+{
+    "levelID": "6",
+    "wordFind": "SOULEVER",
+
+    "images":[
+        {
+            "type": "image",
+            "key": "raise1",
+            "url":"assets/levelImg/level6/raise1.jpg"
+        },
+        {
+            "type": "image",
+            "key": "raise2",
+            "url":"assets/levelImg/level6/raise2.jpg"
+        },
+        {
+            "type": "image",
+            "key": "raise3",
+            "url":"assets/levelImg/level6/raise3.jpg"
+        },
+        {
+            "type": "image",
+            "key": "raise4",
+            "url":"assets/levelImg/level6/raise4.jpg"
+        }
+    ]
+}
