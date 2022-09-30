@@ -41,9 +41,7 @@ export default class EndScene extends Phaser.Scene {
     /**
      * Constructor
      */
-    constructor() {
-        super('EndScene');
-    }
+    constructor() { super('EndScene') }
 
     /**
      * Init the scene with data
@@ -120,8 +118,7 @@ export default class EndScene extends Phaser.Scene {
             .on("pointerdown", () => this.goToStartScene());
 
         // Button text
-        let btnText = this.add
-            .text(null,null,gameOptions.retryText)
+        let btnText = this.add.text(null,null,gameOptions.retryText)
             .setPadding(10)
             .setStyle({
                 fontFamily: gameOptions.textFontFamily,
@@ -166,5 +163,12 @@ export default class EndScene extends Phaser.Scene {
     /**
      * Go to Main scene
      */
-    goToStartScene() { this.scene.start('StartScene') }
+    goToStartScene() {
+        // Fade out animation
+        this.cameras.main.fadeOut(gameOptions.animFadeSpeed, 0, 0, 0)
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.scene.start('StartScene');
+        });
+    }
 }

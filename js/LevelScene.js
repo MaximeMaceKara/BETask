@@ -3,11 +3,10 @@
  */
  let gameOptions = {
     // Color of background
-    bgColor1: 0xd1e6f9,
-    bgColor2: 0x5596c0,
-    bgColor3: 0x8aeb5e,
-    bgColor4: 0x416e2d,
-    bgColor5: 1,
+    bgColor1: 0x414141,
+    bgColor2: 0x000000,
+
+    btnTintColor: 0x9E9E9E,
   };
 
   /**
@@ -17,9 +16,7 @@
     /**
      * Constructor
      */
-    constructor() {
-      super("LevelScene");
-    }
+    constructor() { super("LevelScene") }
 
     /**
      * Load the game assets.
@@ -33,18 +30,18 @@
      * Create and init game assets
      */
     create() {
+      let buttonLine = 1, numLevel = 1;
+
       // Change background color
-      var graphics = this.add.graphics();
+      this.add.graphics()
+        .fillGradientStyle(gameOptions.bgColor1, gameOptions.bgColor1, gameOptions.bgColor2, gameOptions.bgColor2, 1)
+        .fillRect(0, 0, this.game.config.width, this.game.config.height);
 
-      graphics.fillGradientStyle(gameOptions.bgColor1, gameOptions.bgColor2, gameOptions.bgColor3, gameOptions.bgColor4, gameOptions.bgColor5);
-      graphics.fillRect(0, 0, this.game.config.width, this.game.config.height);
-
-      let buttonLine = 1, // Width
-      numLevel = 1; // Number of level
       // Create multiple Level Buttons on 3 height level
       for (let buttonHeight = 1; buttonHeight < 6; buttonHeight++) {
-        // after making a line, start a new line on another height level
+        // After making a line, start a new line on another height level
         buttonLine = 1;
+
         // As long as the line isn't completed continue
         while (buttonLine <= 5) {
           this.createButton(buttonLine, buttonHeight, numLevel);
@@ -57,49 +54,45 @@
     /**
      * Create Level Button
      *
-     * @param {int} buttonLine - allows you to determine the line where the button will be
+     * @param {int} buttonLine - Allows you to determine the line where the button will be
      *
-     * @param {int} buttonHeight - allows you to determine the height where the button will be
+     * @param {int} buttonHeight - Allows you to determine the height where the button will be
      *
-     * @param {int} numLevel - allows you to determine the number of the level of the button will be
+     * @param {int} numLevel - Allows you to determine the number of the level of the button will be
      */
     createButton(buttonLine, buttonHeight, numLevel) {
-      let button = this.add.sprite(
-        this.game.config.width /18 + this.game.scale.gameSize.width * 0.15 * buttonLine,
+      let btn = this.add.sprite(this.game.config.width / 18 + this.game.scale.gameSize.width * 0.15 * buttonLine,
         this.game.scale.gameSize.height * 0.15 * buttonHeight,
-        "btnEmpty"
-      );
-
-      button.setScale(1);
-
-      button
+        "btnEmpty")
+        .setScale(1)
         .setInteractive()
-        .on("pointerdown", () => button.setScale(1.1))
-        .on("pointerup", () => button.setScale(1));
+        .on('pointerover', () => { btn.setTint(gameOptions.btnTintColor) })
+        .on('pointerout', () => { btn.clearTint() })
+        .on('pointerdown', () => this.goToGameScene(numLevel));
 
-      //number of the level on the button
-      let nB = this.add.text(0, 0, numLevel).setOrigin(0, 0).setDepth(0);
-
-      nB.setPadding(30);
-      nB.setStyle({
-        color: "#FFFFFF",
-        fontSize: 30,
-      });
+      // Number of the level on the button
+      let nB = this.add.text(0, 0, numLevel)
+        .setOrigin(0, 0)
+        .setDepth(0)
+        .setPadding(30)
+        .setStyle({ color: "#FFFFFF", fontSize: 30 });
 
       // Position of the number on button
-      nB.x =  this.game.config.width /18 + this.game.scale.gameSize.width * 0.15 * buttonLine - nB.width / 2;
+      nB.x =  this.game.config.width / 18 + this.game.scale.gameSize.width * 0.15 * buttonLine - nB.width / 2;
       nB.y = this.game.scale.gameSize.height * 0.15 * buttonHeight - nB.height / 2;
-
-      // Start game when button down
-      button.on("pointerup", () => this.goToGameScene(numLevel));
     }
 
     /**
      * Go to Game scene
      *
-     * @param {int} numlevel -stock a choice of level number
+     * @param {int} numlevel - Stock a choice of level number
      */
      goToGameScene(numlevel) {
-      this.scene.start("GameScene", { numlevel: numlevel });
+      // Fade out animation
+      this.cameras.main.fadeOut(gameOptions.animFadeSpeed, 0, 0, 0)
+
+      this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+        this.scene.start("GameScene", { numlevel: numlevel });
+      });
     }
   }

@@ -3,17 +3,14 @@
  */
  let gameOptions = {
     // Color of background
-    bgColor1: 0x151820,
-    bgColor2: 0x3b446c,
-    bgColor3: 0x3b446c,
-    bgColor4: 0x6d759e,
-    bgColor5: 1,
+    bgColor1: 0x414141,
+    bgColor2: 0x000000,
 
     // Board scale
     boardScale: 2,
 
     // Buttons style
-    btnScale: 1.3,
+    btnScale: 1,
     btnTintColor: 0x9E9E9E,
     btnTintGray: 0x373737,
     btnTextTintColor: 0x9E9E9E,
@@ -61,21 +58,21 @@ export default class StartScene extends Phaser.Scene {
      * Create and init game assets
      */
     create() {
+        // Init sound
+        let startSound = this.sound.add('start');
+        startSound.play();
+
         // Init board
         this.add.graphics()
-            .fillGradientStyle(gameOptions.bgColor1, gameOptions.bgColor2, gameOptions.bgColor3, gameOptions.bgColor4, gameOptions.bgColor5)
+            .fillGradientStyle(gameOptions.bgColor1, gameOptions.bgColor1, gameOptions.bgColor1, gameOptions.bgColor2, 1)
             .fillRect(0, 0, this.game.config.width, this.game.config.height);
-
-        // Init sound
-        this.startSound = this.sound.add('start');
-        this.startSound.play();
 
         this.time.addEvent({
             delay: 90000,
             callback: () => {
-                this.startSound.stop();
-                this.startSound = this.sound.add('start');
-                this.startSound.play();
+                startSound.stop();
+                startSound = this.sound.add('start');
+                startSound.play();
             },
             loop: true
         })
@@ -96,7 +93,7 @@ export default class StartScene extends Phaser.Scene {
         titleMenu.y = this.game.config.height * 0.09 - titleMenu.height / 2;
 
         // Init start button
-        let btn = this.add.image(this.game.config.width / 2, (this.game.config.height) * 0.40, 'btnClassic')
+        let btn = this.add.image(this.game.config.width / 2, (this.game.config.height) * 0.32, 'btnClassic')
             .setScale(gameOptions.btnScale)
             .setInteractive()
             .on('pointerover', () => {
@@ -118,7 +115,7 @@ export default class StartScene extends Phaser.Scene {
             });
 
         btnText.x = this.game.config.width / 2 - btnText.width / 2;
-        btnText.y = this.game.config.height * 0.40 - btnText.height / 2;
+        btnText.y = this.game.config.height * 0.32 - btnText.height / 2;
     }
 
     /**

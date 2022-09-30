@@ -3,11 +3,8 @@
  */
  let gameOptions = {
     // Color of background
-    bgColor1: 0x151820,
-    bgColor2: 0x3b446c,
-    bgColor3: 0x3b446c,
-    bgColor4: 0x6d759e,
-    bgColor5: 1,
+    bgColor1: 0x414141,
+    bgColor2: 0x000000,
 
     // Board scale
     boardScale: 2,
@@ -24,10 +21,11 @@
     textFontFamily: 'Arial',
     textFontStyle: 'bold',
     textColor: '#fff',
-    textFontSize: '25px',
+    textFontSize: '30px',
 
-    // Color of board background
+    // Colors
     boardBackgroundColor: 0xC5C5C5,
+    blue: 0x3e95f3,
 
     // Text content
     titleText: 'Level ',
@@ -65,9 +63,7 @@ export default class GameScene extends Phaser.Scene {
     /**
      * Constructor
      */
-    constructor() {
-        super('GameScene');
-    }
+    constructor() { super('GameScene') }
 
     /**
      * Level button data
@@ -75,7 +71,7 @@ export default class GameScene extends Phaser.Scene {
      * @param {int} data - Allows you to determine the chosen level
      *
      */
-     init(data) {
+    init(data) {
         this.level = data.numlevel;
         this.jsonFile = `../levels/level${this.level}.json`;
     }
@@ -84,17 +80,12 @@ export default class GameScene extends Phaser.Scene {
      * Load the game assets.
      */
     preload() {
-        this.load.spritesheet('backgroundImage','assets/backgroundImage.jpg',{
-            frameWidth: 1920,
-            frameHeight: 1080
-        });
-
-        this.load.spritesheet('cadre','assets/cadreBlue.png',{
+        this.load.spritesheet('cadre','assets/cadre.png',{
             frameWidth: 400,
             frameHeight: 400
         });
 
-        alphabets.forEach((x) => this.load.image(x,`assets/imgLetters/${x}.png`));
+        alphabets.forEach((x) => this.load.svg(x,`assets/imgLetters/${x}.svg`, {scale: 3}));
 
         this.load.json("json", this.jsonFile);
     }
@@ -111,24 +102,30 @@ export default class GameScene extends Phaser.Scene {
 
         this.lazyLoadingImg(data);
 
-        this.add.image(950,450,'backgroundImage');
+        // Change background color
+        this.add.graphics()
+            .fillGradientStyle(gameOptions.bgColor1, gameOptions.bgColor1, gameOptions.bgColor2, gameOptions.bgColor2, 1)
+            .fillRect(0, 0, this.game.config.width, this.game.config.height);
 
         // Level title
-        this.add.text(null, null, gameOptions.titleText + this.level, {
+        let titleLevel = this.add.text(null, null, gameOptions.titleText + this.level, {
             fontFamily: gameOptions.textFontFamily,
             fontStyle: gameOptions.textFontStyle,
-            fontSize: gameOptions.titleFontSize,
+            fontSize: gameOptions.textFontSize,
             fill: gameOptions.titleColor,
         })
+
+        titleLevel.x = 50;
+        titleLevel.y = this.game.config.height * 0.04 - titleLevel.height / 2;
 
         titleChances = this.add.text(null,null,gameOptions.titleChance + chances, {
             fontFamily: gameOptions.textFontFamily,
             fontStyle: gameOptions.textFontStyle,
-            fontSize: gameOptions.titleFontSize,
+            fontSize: gameOptions.textFontSize,
             fill: gameOptions.titleColor
         })
 
-        titleChances.x = this.game.config.width / 1.02 - titleChances.width / 1.02;
+        titleChances.x = this.game.config.width - titleChances.width - 50;
         titleChances.y = this.game.config.height * 0.04 - titleChances.height / 2;
 
         // Display answer slot
@@ -169,7 +166,7 @@ export default class GameScene extends Phaser.Scene {
 
         solved.forEach((x,index) => {
             // Set name of image to Index of solved array
-            this.answerSlots = answerSlots.create(this.game.config.width/ 4 +  gameOptions.answerSlotsSizeX * 0.15 * index,gameOptions.answerSlotsSizeY,'cadre')
+            this.answerSlots = answerSlots.create(this.game.config.width/ 3 +  gameOptions.answerSlotsSizeX * 0.15 * index,gameOptions.answerSlotsSizeY,'cadre')
                 .setScale(.2)
                 .setName(index)
                 .setInteractive({dropZone: true});
@@ -234,6 +231,7 @@ export default class GameScene extends Phaser.Scene {
                 this.reload();
 
                 titleChances.text = gameOptions.titleChance + chances;
+
                 // Display answer slot
                 this.addAnswerSlot();
 
@@ -295,9 +293,9 @@ export default class GameScene extends Phaser.Scene {
 
         while (currentIndex != 0) {
           randomIndex = Math.floor(Math.random() * currentIndex);
-          [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-
           currentIndex--;
+
+          [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
         }
 
         return array;
@@ -317,6 +315,12 @@ export default class GameScene extends Phaser.Scene {
      */
     gameOver(){
         this.cache.json.destroy('json');
-        this.scene.start('EndScene',{ level: this.level, chances: chances });
+
+        // Fade out animation
+        this.cameras.main.fadeOut(gameOptions.animFadeSpeed, 0, 0, 0)
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.scene.start('EndScene',{ level: this.level, chances: chances });
+        });
     }
 }
