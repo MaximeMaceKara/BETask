@@ -1,27 +1,5 @@
 {
-    "levelID": "4",
-    "wordFind": "BRUIT",
-
-    "images":[
-        {
-            "type": "image",
-            "key": "noise1",
-            "url":"assets/levelImg/level4/noise1.jpg"
-        },
-        {
-            "type": "image",
-            "key": "noise2",
-            "url":"assets/levelImg/level4/noise2.jpg"
-        },
-        {
-            "type": "image",
-            "key": "noise3",
-            "url":"assets/levelImg/level4/noise3.jpg"
-        },
-        {
-            "type": "image",
-            "key": "noise4",
-            "url":"assets/levelImg/level4/noise4.jpg"
-        }
-    ]
+    "gameType": "BE",
+    "timer": 5,
+    "image":"assets/beImg/forest-s.png"
 }

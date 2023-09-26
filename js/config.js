@@ -1,7 +1,10 @@
 import EndScene from './EndScene.js';
 import GameScene from './GameScene.js';
 import StartScene from './StartScene.js';
-import LevelScene from './LevelScene.js';
+import BEScene from './BEScene.js';
+import PlayScene from './PlayScene.js';
+import DRMScene from './DRMScene.js';
+import PreLoader from './PreLoader.js';
 
 /**
  * Configuration of the game
@@ -22,7 +25,7 @@ const configurations = {
             debut: true,
         },
     },
-    scene: [StartScene, LevelScene, GameScene, EndScene],
+    scene: [StartScene, BEScene, PreLoader, PlayScene, DRMScene, GameScene, EndScene],
 };
 
 /**

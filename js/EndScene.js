@@ -48,7 +48,7 @@ export default class EndScene extends Phaser.Scene {
      *
      * @param {int} data - collect the data
      */
-    init(data) { this.data = data; }
+    init() {  }
 
     /**
      * Load the game assets.
@@ -128,36 +128,6 @@ export default class EndScene extends Phaser.Scene {
 
         btnText.x = this.game.config.width / 2 - btnText.width / 2;
         btnText.y = this.game.config.height * 0.35 - btnText.height / 2;
-
-        // State endgame
-        let endgameResult =
-            this.data.chances <= 0 || this.data.level < 25
-                ? gameOptions.looseText
-                : gameOptions.winText;
-
-        // Result text
-        let resultText = this.add.text(null,null, endgameResult,{
-            fontSize: gameOptions.textFontSize,
-        });
-
-        resultText.x = this.game.config.width / 2 - resultText.width / 2 + 10;
-        resultText.y = this.game.config.height * 0.50 - resultText.height / 2;
-
-        // Life text
-        let liveText = this.add.text(
-            null,
-            null,
-            gameOptions.lifeScore +
-                this.data.chances,
-            {
-                fontFamily: gameOptions.textFontFamily,
-                fontSize: gameOptions.textFontSize,
-                fill: gameOptions.titleColor
-            }
-        );
-
-        liveText.x = this.game.config.width / 2 - liveText.width / 2 + 10;
-        liveText.y = this.game.config.height * 0.69 - liveText.height / 2;
     }
 
     /**

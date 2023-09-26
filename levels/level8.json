@@ -1,27 +1,5 @@
 {
-    "levelID": "8",
-    "wordFind": "GORGE",
-
-    "images":[
-        {
-            "type": "image",
-            "key": "throat1",
-            "url":"assets/levelImg/level8/throat1.jpg"
-        },
-        {
-            "type": "image",
-            "key": "throat2",
-            "url":"assets/levelImg/level8/throat2.jpg"
-        },
-        {
-            "type": "image",
-            "key": "throat3",
-            "url":"assets/levelImg/level8/throat3.jpg"
-        },
-        {
-            "type": "image",
-            "key": "throat4",
-            "url":"assets/levelImg/level8/throat4.jpg"
-        }
-    ]
+    "gameType": "BESolver",
+    "timer": 50,
+    "image":"assets/beImg/black.jpg"
 }

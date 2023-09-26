@@ -1,27 +1,5 @@
 {
-    "levelID": "3",
-    "wordFind": "SATELLITE",
-
-    "images":[
-        {
-            "type": "image",
-            "key": "satellite1",
-            "url":"assets/levelImg/level3/satellite1.jpg"
-        },
-        {
-            "type": "image",
-            "key": "satellite2",
-            "url":"assets/levelImg/level3/satellite2.jpg"
-        },
-        {
-            "type": "image",
-            "key": "satellite3",
-            "url":"assets/levelImg/level3/satellite3.jpg"
-        },
-        {
-            "type": "image",
-            "key": "satellite4",
-            "url":"assets/levelImg/level3/satellite4.jpg"
-        }
-    ]
+    "gameType": "BE",
+    "timer": 5,
+    "image":"assets/beImg/farm-s.png"
 }

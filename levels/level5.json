@@ -1,27 +1,5 @@
 {
-    "levelID": "5",
-    "wordFind": "BALLE",
-
-    "images":[
-        {
-            "type": "image",
-            "key": "ball1",
-            "url":"assets/levelImg/level5/ball1.jpg"
-        },
-        {
-            "type": "image",
-            "key": "ball2",
-            "url":"assets/levelImg/level5/ball2.jpg"
-        },
-        {
-            "type": "image",
-            "key": "ball3",
-            "url":"assets/levelImg/level5/ball3.jpg"
-        },
-        {
-            "type": "image",
-            "key": "ball4",
-            "url":"assets/levelImg/level5/ball4.jpg"
-        }
-    ]
+    "gameType": "BE",
+    "timer": 5,
+    "image":"assets/beImg/port-s.png"
 }

@@ -27,7 +27,7 @@
     boardBackgroundColor: 0xC5C5C5,
 
     // Text content
-    titleText: '4 IMAGES 1 MOT',
+    titleText: 'BE task',
     btnText: 'Jouer',
 
     // Anim params
@@ -125,8 +125,10 @@ export default class StartScene extends Phaser.Scene {
         // Fade out animation
         this.cameras.main.fadeOut(gameOptions.animFadeSpeed, 0, 0, 0)
 
+        let initNumLevel = 0
+
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start('LevelScene');
+            this.scene.start("GameScene", { numLevel: initNumLevel });
         });
     }
 }

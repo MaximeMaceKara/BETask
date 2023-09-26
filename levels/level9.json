@@ -1,27 +1,5 @@
 {
-    "levelID": "9",
-    "wordFind": "PAQUET",
-
-    "images":[
-        {
-            "type": "image",
-            "key": "package1",
-            "url":"assets/levelImg/level9/package1.jpg"
-        },
-        {
-            "type": "image",
-            "key": "package2",
-            "url":"assets/levelImg/level9/package2.jpg"
-        },
-        {
-            "type": "image",
-            "key": "package3",
-            "url":"assets/levelImg/level9/package3.jpg"
-        },
-        {
-            "type": "image",
-            "key": "package4",
-            "url":"assets/levelImg/level9/package4.jpg"
-        }
-    ]
+    "gameType": "BESolver",
+    "timer": 50,
+    "image":"assets/beImg/farm.jpg"
 }
