@@ -25,54 +25,54 @@ export default class PreLoader extends Phaser.Scene {
      */
     preload() {
       // Fonts
-      this.loadFont('Monogram',  '../assets/font/monogram_extended.ttf');
-      this.loadFont('Arcadia',  '../assets/font/Arcadia-Regular.ttf');
+      this.loadFont('Monogram',  '/assets/font/monogram_extended.ttf');
+      this.loadFont('Arcadia',  '/assets/font/Arcadia-Regular.ttf');
 
       // Images
-      this.load.image('background', '../assets/background/Background 1.png');
-      this.load.image('bgTree_1', '../assets/background/BGTrees 2.png');
-      this.load.image('lights_1', '../assets/background/Lights 3.png');
-      this.load.image('lights_2', '../assets/background/Lights 6.png');
-      this.load.image('bgTree_2', '../assets/background/BGTrees 4.png');
-      this.load.image('bgTree_3', '../assets/background/BGTrees 5.png');
-      this.load.image('bgTree_4', '../assets/background/BGTrees 7.png');
-      this.load.image('upTree', '../assets/background/UpTrees 8.png');
-      this.load.image('floor', '../assets/background/Floor 9.png');
-      this.load.image('spike', '../assets/obstacle/spike collection.png');
+      this.load.image('background', '/assets/background/Background 1.png');
+      this.load.image('bgTree_1', '/assets/background/BGTrees 2.png');
+      this.load.image('lights_1', '/assets/background/Lights 3.png');
+      this.load.image('lights_2', '/assets/background/Lights 6.png');
+      this.load.image('bgTree_2', '/assets/background/BGTrees 4.png');
+      this.load.image('bgTree_3', '/assets/background/BGTrees 5.png');
+      this.load.image('bgTree_4', '/assets/background/BGTrees 7.png');
+      this.load.image('upTree', '/assets/background/UpTrees 8.png');
+      this.load.image('floor', '/assets/background/Floor 9.png');
+      this.load.image('spike', '/assets/obstacle/spike collection.png');
 
       // Sprite sheets
-      this.load.spritesheet('player', '../assets/player/player_run.png', {
+      this.load.spritesheet('player', '/assets/player/player_run.png', {
         frameWidth: 63.5,
         frameHeight: 59,
       });
 
-      this.load.spritesheet('player_rest', '../assets/player/player_rest.png', {
+      this.load.spritesheet('player_rest', '/assets/player/player_rest.png', {
         frameWidth: 33.7,
         frameHeight: 60,
       });
 
-      this.load.spritesheet('player_jump', '../assets/player/player_jump.png', {
+      this.load.spritesheet('player_jump', '/assets/player/player_jump.png', {
         frameWidth: 56.7,
         frameHeight: 59,
       });
 
-      this.load.spritesheet('player_falling', '../assets/player/player_falling.png', {
+      this.load.spritesheet('player_falling', '/assets/player/player_falling.png', {
         frameWidth: 51.91,
         frameHeight: 59,
       });
 
-      this.load.spritesheet('player_dead', '../assets/player/player_dead.png', {
+      this.load.spritesheet('player_dead', '/assets/player/player_dead.png', {
         frameWidth: 73,
         frameHeight: 60,
       });
 
-      this.load.spritesheet('skeleton_walk', '../assets/monsters/skeleton/Skeleton Walk.png', {
+      this.load.spritesheet('skeleton_walk', '/assets/monsters/skeleton/Skeleton Walk.png', {
         frameWidth: 45.4,
         frameHeight: 68,
       });
 
-      this.load.audio('gameMusic', '../assets/music/A mystical journey_3.ogg');
-      this.load.audio('death_sound', '../assets/sound_effects/death_4_alex.wav');
+      this.load.audio('gameMusic', '/assets/music/A mystical journey_3.ogg');
+      this.load.audio('death_sound', '/assets/sound_effects/death_4_alex.wav');
 
       console.log("PreLoader preload");
     }

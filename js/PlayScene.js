@@ -56,7 +56,7 @@ export default class PlayScene extends Phaser.Scene {
      * Load the game assets.
      */
     preload() {
-        this.load.json('PlayScene', `../levels/level${this.level}.json`);
+        this.load.json('PlayScene', `/levels/level${this.level}.json`);
         this.width = this.scale.width;
         this.height = this.scale.height;
     }
