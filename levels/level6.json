@@ -1,4 +1,5 @@
 {
-    "gameType": "PlayGame",
-    "timer": 10
+    "gameType": "BESolver",
+    "timer": 50,
+    "image":"assets/beImg/door.jpg"
 }
