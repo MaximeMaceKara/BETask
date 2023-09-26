@@ -91,7 +91,7 @@ export default class BEScene extends Phaser.Scene {
      * Load the game assets.
      */
     preload() {
-        this.load.json('BE', `../BeTask/levels/level${this.level}.json`);
+        this.load.json('BE', `/levels/level${this.level}.json`);
     }
 
     /**
