@@ -69,8 +69,8 @@ export default class GameScene extends Phaser.Scene {
      * Load the game assets.
      */
     preload() {
-        this.load.json("json", "../levels/sequences.json");
-        this.load.json('nextSeq', `../levels/level${this.actualSeq +1}.json`);
+        this.load.json("json", "../BeTask/levels/sequences.json");
+        this.load.json('nextSeq', `../BeTask/levels/level${this.actualSeq +1}.json`);
     }
 
     /**
